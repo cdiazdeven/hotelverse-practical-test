@@ -1,0 +1,43 @@
+/* .errorContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+}
+  
+.errorImage {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+}
+  
+.errorMessage {
+    font-size: 18px;
+    color: #fff;
+} */
+
+.errorContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .errorImage {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+    background-image: url('/images/error.png');
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .errorMessage {
+    font-size: 18px;
+    color: #fff;
+  }
+  

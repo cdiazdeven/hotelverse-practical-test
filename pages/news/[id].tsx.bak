@@ -1,0 +1,85 @@
+
+import { GetStaticPaths, GetStaticProps } from 'next';
+import { useRouter } from 'next/router';
+import Image from 'next/image';
+import { useAppContext } from "../../src/context/AppContext";
+
+import { NewsType, NewsDetailProps } from '../../src/types/NewsType';
+
+export default function NewsDetail({ news } : NewsDetailProps) {
+
+    const router = useRouter();
+
+    const { category, page } = useAppContext();
+
+    const showHomeScreen = () => {        
+        router.push(
+          {
+            pathname: '/',
+            query: { category, page },
+          }
+        );
+    };
+
+    return (
+      <div className="container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', }}>
+      <div className="card shadow-lg" style={{ width: '40rem' }}>
+      <div className="card-body">
+        {news.urlToImage && (
+                <Image
+                    src={news.urlToImage}
+                    alt={news.title}
+                    width={500}
+                    height={300} 
+                    layout="responsive"
+                />
+                )}
+              <h5 className="card-title mt-4">
+                  {news.title}
+              </h5>
+              <p className="card-text mt-4">
+                  {news.description}
+              </p>
+              <p className="card-text">
+                <small className="text-muted">
+                  {new Date(news.publishedAt).toLocaleDateString()}
+                </small>
+              </p>
+              <div className="text-center">
+                <button className='btn btn-sm mt-2 btn-primary' onClick={showHomeScreen}>Back to list</button>
+              </div>
+          </div>
+      </div>
+    </div>
+    )
+  
+}
+
+
+export const getStaticPaths: GetStaticPaths = async () => {
+
+  const res = await fetch(`https://fakeapi/getAllNews`);
+  const newsArray = await res.json();
+  
+  const paths = newsArray.slice(0,5).map((news: NewsType) => ({
+    params: { id: news.id }
+  }));
+  
+  return {
+    paths,
+    fallback: true,
+  };
+}
+
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+
+  const res = await fetch(`https://fakeapi/news/${params.id}`);
+  const news: NewsType = await res.json();
+  
+  return {
+    props: {
+      news,
+    },
+  };
+}
